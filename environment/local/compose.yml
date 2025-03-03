@@ -1,0 +1,56 @@
+version: '3'
+
+services:
+  # python
+  chatbot-python:
+    container_name: chatbot-python
+    build:
+      context: ./../../
+      dockerfile: ./environment/docker/python/Dockerfile
+      target: dev
+    working_dir: /var/www/src
+    env_file:
+      - .env
+    tty: true
+    networks:
+      - default
+    ports:
+      - 8080:8080
+    volumes:
+      - ./../../src:/var/www/src
+    depends_on:
+      - chatbot-mysql
+    # command: sh -c "poetry install && uvicorn chatbot.main:app --host 0.0.0.0 --port 8080 --reload"
+    # mysql
+  chatbot-mysql:
+    container_name: chatbot-mysql
+    build:
+      context: ./../../
+      dockerfile: ./environment/docker/mysql/Dockerfile
+    networks:
+      - default
+    ports:
+      - 3306:3306
+    volumes:
+      - chatbot-db-data:/var/lib/mysql:delegated
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+  # phpmyadmin
+  chatbot-phpmyadmin:
+    image: phpmyadmin
+    container_name: chatbot-phpmyadmin
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOSTS=chatbot-mysql
+      - PMA_USER=${DB_USERNAME}
+      - PMA_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "8888:80"
+    depends_on:
+      - chatbot-mysql
+
+volumes:
+  chatbot-db-data:
