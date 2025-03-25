@@ -1,9 +1,12 @@
 
 from fastapi import FastAPI
 from pydantic import  BaseModel
+from llms import generate_response
 
 class Message(BaseModel):
     text: str
+class RequestData(BaseModel):
+    name: str
 
 app = FastAPI()
 
@@ -17,3 +20,7 @@ def response_msg(msg: Message):
         return {"response": "さよなら"}
     return {"response" : "不明なメッセージ"}
 
+@app.post('/llm/api')
+def response_name(data: RequestData):
+    response = generate_response(data.name)
+    return {"response": response}
