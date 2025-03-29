@@ -1,0 +1,28 @@
+{
+    "name": "chatbot-python",
+    "dockerComposeFile": [
+        "../../environment/local/compose.yml"
+    ],
+    "service": "chatbot-python",
+    "workspaceFolder": "/var/www/src",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.python",
+                "ms-python.autopep8",
+                "ms-python.vscode-pylance",
+                "charliermarsh.ruff"
+            ],
+            "settings": {
+                "[python]": {
+                    "editor.defaultFormatter": "charliermarsh.ruff",
+                    "editor.codeActionsOnSave": {
+                        "source.fixAll.ruff": "explicit",
+                        "source.organizeImports.ruff": "explicit"
+                    },
+                    "editor.formatOnSave": true
+                }
+            }
+        }
+    }
+}
