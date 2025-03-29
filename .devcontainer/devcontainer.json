@@ -1,7 +1,7 @@
 {
     "name": "chatbot-python",
     "dockerComposeFile": [
-        "../../environment/local/compose.yml"
+        "../environment/local/compose.yml"
     ],
     "service": "chatbot-python",
     "workspaceFolder": "/var/www/src",
