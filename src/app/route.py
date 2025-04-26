@@ -14,12 +14,18 @@ async def root():
 
 @router.post("/kon")
 def response_msg(msg: Message):
+    """
+    ヘルスチェック用
+    """
     if msg.text == "こんにちは":
         return {"response": "さよなら"}
     return JSONResponse(content={"resonse": "不明なメッセージ"})
 
 
-@router.post("/llm/api")
+@router.post("/llm/chat")
 def response_name(request: RequestData):
+    """
+    チャット用
+    """
     controller = LLMController()
     return controller.generate_response(request)
